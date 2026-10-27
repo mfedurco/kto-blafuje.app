@@ -1,0 +1,17 @@
+{
+ "version": 1,
+ "latest": "halloween-2026",
+ "packs": [
+  {
+   "id": "halloween-2026",
+   "file": "halloween-2026.json",
+   "name": "Halloween",
+   "title": "Halloween balík slov",
+   "text": "Duchovia, tekvice a čarodejnice. Stiahni si nové slová!",
+   "emoji": "🎃",
+   "color": "#FFB347",
+   "version": 1,
+   "until": "2026-11-10"
+  }
+ ]
+}

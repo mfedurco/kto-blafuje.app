@@ -30,6 +30,12 @@ export type Category = {
   color: string;
   words: WordItem[];
   isCustom?: boolean;
+  /** Balík slov stiahnutý z internetu. */
+  isPack?: boolean;
+  /** Emoji namiesto ikony (pre stiahnuté balíky). */
+  emoji?: string;
+  /** Verzia balíka, podľa nej sa rozhodne o aktualizácii. */
+  version?: number;
 };
 
 const w = (word: string, ...hints: string[]): WordItem => ({ word, hints });

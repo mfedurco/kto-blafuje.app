@@ -4,6 +4,7 @@ import { Modal, Pressable, ScrollView, View, useWindowDimensions } from 'react-n
 
 import { AdSlot } from '@/components/AdSlot';
 import { BigButton } from '@/components/Button';
+import { PackBanner } from '@/components/PackBanner';
 import { Blob, Screen } from '@/components/Screen';
 import { Face, Mascot, PencilIcon, PlayIcon, QuestionIcon } from '@/components/Icons';
 import { T } from '@/components/T';
@@ -116,6 +117,8 @@ export default function Home() {
             />
           </View>
         </View>
+
+        <PackBanner />
 
         <View style={{ flex: 1, minHeight: 16 }} />
         <AdSlot />

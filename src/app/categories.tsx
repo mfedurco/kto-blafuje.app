@@ -17,12 +17,13 @@ export default function Categories() {
   const impostorCount = useGame((s) => s.impostorCount);
   const categoryIds = useGame((s) => s.categoryIds);
   const customCategories = useGame((s) => s.customCategories);
+  const packs = useGame((s) => s.packs);
   const toggleCategory = useGame((s) => s.toggleCategory);
   const setCategories = useGame((s) => s.setCategories);
   const setImpostorCount = useGame((s) => s.setImpostorCount);
   const startGame = useGame((s) => s.startGame);
 
-  const categories = allCategories(customCategories);
+  const categories = allCategories(customCategories, packs);
   const playable = categories.filter((c) => c.words.length > 0);
   const selectedPlayable = playable.filter((c) => categoryIds.includes(c.id));
   const tileWidth = (width - 40 - 12) / 2;
@@ -85,7 +86,13 @@ export default function Categories() {
                 })}
               >
                 <View style={{ width: 52, height: 52, borderRadius: 26, backgroundColor: selected ? colors.white : c.color, alignItems: 'center', justifyContent: 'center' }}>
-                  <CategoryIcon name={c.icon} size={32} />
+                  {c.emoji ? (
+                    <T size={30} lh={36}>
+                      {c.emoji}
+                    </T>
+                  ) : (
+                    <CategoryIcon name={c.icon} size={32} />
+                  )}
                 </View>
                 <View>
                   <T size={24} w="bold" lh={26} numberOfLines={1} adjustsFontSizeToFit>

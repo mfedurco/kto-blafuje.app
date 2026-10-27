@@ -16,3 +16,6 @@ Slovenská offline párty hra na jednom mobile: všetci okrem podvodníka poznaj
 - `store/` – texty a grafika pre Google Play, postup v `store/RELEASE.md`
 - `docs/privacy.html` – zásady ochrany súkromia
 - `docs/ads.md` – miesto pre reklamy a ako zapnúť AdMob
+
+## Tematické balíky slov
+Priečinok `packs/` obsahuje JSON balíky (Halloween, Vianoce ...). Nový balík: pridaj `packs/<id>.json` (`{id, words:[{word, hints[]}]}`), zapíš ho do `packs/index.json` a nastav `latest`. Appka ho ponúkne bannerom na úvodnej obrazovke, bez aktualizácie v obchode. Nápovedy max. 24 znakov, 1–4 na slovo, bez samotného slova.

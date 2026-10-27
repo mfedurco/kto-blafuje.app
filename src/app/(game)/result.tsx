@@ -1,6 +1,6 @@
 import { Redirect, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, TextInput, View, useWindowDimensions } from 'react-native';
 
 import { AdSlot } from '@/components/AdSlot';
 import { BigButton } from '@/components/Button';
@@ -9,11 +9,13 @@ import { Screen } from '@/components/Screen';
 import { T } from '@/components/T';
 import { sk } from '@/constants/sk';
 import { colors, font } from '@/constants/theme';
+import { fitSize } from '@/lib/fit';
 import { useExitGuard } from '@/lib/useExitGuard';
 import { useGame } from '@/store/useGame';
 
 export default function Result() {
   const router = useRouter();
+  const { width: screenW } = useWindowDimensions();
   const game = useGame((s) => s.game);
   const guessWord = useGame((s) => s.guessWord);
   const nextRound = useGame((s) => s.nextRound);
@@ -151,7 +153,7 @@ export default function Result() {
                     <T size={20} w="medium" lh={24}>
                       {sk.result.secretWordWas}
                     </T>
-                    <T size={46} w="bold" lh={52} center numberOfLines={2} adjustsFontSizeToFit>
+                    <T size={fitSize(game.word, screenW - 40 - 38, 46, 22)} w="bold" lh={52} center numberOfLines={2} adjustsFontSizeToFit>
                       {game.word}
                     </T>
                   </View>

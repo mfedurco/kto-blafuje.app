@@ -44,6 +44,16 @@ export const sk = {
     stepLabel: 'Krok 2 z 2',
   },
 
+  packs: {
+    badge: 'NOVÉ',
+    download: 'Stiahnuť',
+    update: 'Aktualizovať',
+    downloading: 'Sťahujem',
+    ready: 'Vybrať',
+    installedHint: 'Stiahnuté, vyber ho v kategóriách',
+    error: 'Nepodarilo sa stiahnuť. Skús to neskôr.',
+  },
+
   reveal: {
     handOver: 'Podaj telefón',
     dontLook: 'Ostatní, nepozerajte!',

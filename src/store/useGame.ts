@@ -31,6 +31,8 @@ type Persisted = {
   impostorCount: number;
   categoryIds: string[];
   customCategories: Category[];
+  /** Stiahnuté tematické balíky slov. */
+  packs: Category[];
   usedKeys: string[];
   lastParty: LastParty | null;
 };
@@ -59,13 +61,16 @@ type Actions = {
   removeCustomCategory: (id: string) => void;
   addCustomWord: (categoryId: string, word: string, hint: string) => 'ok' | 'empty' | 'hintHasWord';
   removeCustomWord: (categoryId: string, word: string) => void;
+  /** Uloží stiahnutý balík (alebo ho aktualizuje) a rovno ho vyberie do hry. */
+  installPack: (pack: Category) => void;
+  removePack: (id: string) => void;
 };
 
 type State = Persisted & Actions & { game: Game | null };
 
 const emptyNames = () => Array.from({ length: MAX_PLAYERS }, () => '');
 
-export const allCategories = (custom: Category[]): Category[] => [...CATEGORIES, ...custom];
+export const allCategories = (custom: Category[], packs: Category[] = []): Category[] => [...CATEGORIES, ...packs, ...custom];
 
 export const useGame = create<State>()(
   persist(
@@ -75,6 +80,7 @@ export const useGame = create<State>()(
       impostorCount: 1,
       categoryIds: ['animals', 'food', 'fairytales', 'home'],
       customCategories: [],
+      packs: [],
       usedKeys: [],
       lastParty: null,
       game: null,
@@ -106,7 +112,7 @@ export const useGame = create<State>()(
 
       startGame: () => {
         const s = get();
-        const selected = allCategories(s.customCategories).filter(
+        const selected = allCategories(s.customCategories, s.packs).filter(
           (c) => s.categoryIds.includes(c.id) && c.words.length > 0,
         );
         if (selected.length === 0) return false;
@@ -124,7 +130,7 @@ export const useGame = create<State>()(
         const s = get();
         const last = s.lastParty;
         if (!last) return false;
-        const selected = allCategories(s.customCategories).filter(
+        const selected = allCategories(s.customCategories, s.packs).filter(
           (c) => last.categoryIds.includes(c.id) && c.words.length > 0,
         );
         if (selected.length === 0) return false;
@@ -226,6 +232,13 @@ export const useGame = create<State>()(
             c.id === categoryId ? { ...c, words: c.words.filter((x) => x.word !== word) } : c,
           ),
         })),
+      installPack: (pack) =>
+        set((s) => ({
+          packs: [...s.packs.filter((p) => p.id !== pack.id), pack],
+          categoryIds: s.categoryIds.includes(pack.id) ? s.categoryIds : [...s.categoryIds, pack.id],
+        })),
+      removePack: (id) =>
+        set((s) => ({ packs: s.packs.filter((p) => p.id !== id), categoryIds: s.categoryIds.filter((x) => x !== id) })),
     }),
     {
       name: 'kto-blafuje-v1',
@@ -237,6 +250,7 @@ export const useGame = create<State>()(
         impostorCount: s.impostorCount,
         categoryIds: s.categoryIds,
         customCategories: s.customCategories,
+        packs: s.packs,
         usedKeys: s.usedKeys,
         lastParty: s.lastParty,
       }),

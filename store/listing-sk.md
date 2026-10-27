@@ -25,7 +25,7 @@ Ako sa hrá:
 • veľké ovládacie prvky vhodné aj pre menšie deti
 • odhalenie karty je chránené: obrazovka vyzerá rovnako pre podvodníka aj ostatných, líši sa len farba písma
 
-Hra je celá po slovensky a funguje bez pripojenia na internet.
+Hra je celá po slovensky a funguje bez pripojenia na internet. Občas pribudne tematický balík slov (Halloween, Vianoce ...) na stiahnutie zadarmo.
 
 ## Čo je nové (verzia 1.0)
 Prvé vydanie.
@@ -53,3 +53,6 @@ Bez násilia, strachu, hazardu, nákupov a chatu s cudzími ľuďmi. Očakávan�
 - Aplikácia neobsahuje nákupy v aplikácii.
 - Aplikácia nepoužíva polohu, kameru, mikrofón, kontakty ani súbory.
 - Oprávnenie VIBRATE sa používa na vibráciu po skončení časovača.
+
+## Data safety (poznámka)
+Appka robí jednu HTTPS požiadavku na raw.githubusercontent.com (balíky slov). Neodosiela žiadne údaje; v Data safety stačí uviesť, že sa nezbierajú žiadne údaje. Údaje počas prenosu sú šifrované.

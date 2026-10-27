@@ -1,6 +1,6 @@
 import { Redirect, useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BigButton } from '@/components/Button';
@@ -11,6 +11,7 @@ import { T } from '@/components/T';
 import { sk } from '@/constants/sk';
 import { colors } from '@/constants/theme';
 import { CATEGORIES } from '@/data/words';
+import { fitSize } from '@/lib/fit';
 import { useExitGuard } from '@/lib/useExitGuard';
 import { allCategories, useGame } from '@/store/useGame';
 
@@ -20,8 +21,10 @@ const IMPOSTOR_TEXT = '#B3123F';
 export default function Reveal() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { width: screenW } = useWindowDimensions();
   const game = useGame((s) => s.game);
   const customCategories = useGame((s) => s.customCategories);
+  const packs = useGame((s) => s.packs);
   const advanceReveal = useGame((s) => s.advanceReveal);
   const [h, setH] = useState(0);
   const [seenFor, setSeenFor] = useState<number | null>(null);
@@ -34,7 +37,7 @@ export default function Reveal() {
   const player = game.players[game.revealIndex];
   const next = game.players[game.revealIndex + 1];
   const isImpostor = player.role === 'impostor';
-  const category = allCategories(customCategories).find((c) => c.id === game.categoryId) ?? CATEGORIES[0];
+  const category = allCategories(customCategories, packs).find((c) => c.id === game.categoryId) ?? CATEGORIES[0];
 
   const openTop = Math.max(128, insets.top + 100);
   const sheetHeight = Math.max(0, h - openTop);
@@ -43,6 +46,11 @@ export default function Reveal() {
   const avatar = small ? 110 : 150;
 
   const seen = seenFor === player.id;
+
+  // Dlhé slová radšej zmenšíme, než by sa zalomili uprostred slova.
+  const wordSize = fitSize(game.word, screenW - 40, small ? 80 : 96, 28);
+  const hintText = player.hint ?? game.categoryName;
+  const hintSize = fitSize(hintText, screenW - 40 - 24 - 6, 58, 24);
 
   // Farba obrazovky je pre všetkých rovnaká (odrazy v okuliaroch by inak prezradili rolu).
   // Líši sa iba farba písma.
@@ -158,8 +166,8 @@ export default function Reveal() {
             {player.hint ? sk.reveal.yourHint : sk.reveal.yourHintNone}
           </T>
           <View style={{ marginTop: 8, width: '100%', backgroundColor: colors.white, borderWidth: 3, borderColor: colors.mintDark, borderRadius: 28, paddingVertical: 20, paddingHorizontal: 12 }}>
-            <T size={58} w="bold" color={textColor} lh={64} center numberOfLines={2} adjustsFontSizeToFit>
-              {player.hint ?? game.categoryName}
+            <T size={hintSize} w="bold" color={textColor} lh={Math.round(hintSize * 1.1)} center numberOfLines={2} adjustsFontSizeToFit>
+              {hintText}
             </T>
           </View>
           <T size={24} w="medium" color={textColor} lh={30} center style={{ marginTop: 18 }}>
@@ -176,7 +184,7 @@ export default function Reveal() {
               {game.categoryName}
             </T>
           </View>
-          <T size={game.word.length > 12 ? 56 : 96} w="bold" color={textColor} lh={game.word.length > 12 ? 62 : 104} center numberOfLines={2} adjustsFontSizeToFit style={{ marginTop: small ? 10 : 22, width: '100%' }}>
+          <T size={wordSize} w="bold" color={textColor} lh={Math.round(wordSize * 1.1)} center numberOfLines={2} adjustsFontSizeToFit style={{ marginTop: small ? 10 : 22, width: '100%' }}>
             {game.word}
           </T>
           <T size={24} w="medium" lh={30} center style={{ marginTop: 14 }}>
