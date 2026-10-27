@@ -11,3 +11,8 @@ Slovenská offline párty hra na jednom mobile: všetci okrem podvodníka poznaj
 - `src/components` – ovládacie prvky, ikony, `SwipeReveal`
 - `src/data` – slová a nápovedy (`words.ts`, `more.ts`)
 - `src/lib`, `src/store` – herná logika a stav
+
+## Vydanie
+- `store/` – texty a grafika pre Google Play, postup v `store/RELEASE.md`
+- `docs/privacy.html` – zásady ochrany súkromia
+- `docs/ads.md` – miesto pre reklamy a ako zapnúť AdMob

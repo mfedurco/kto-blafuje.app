@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Modal, Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 
+import { AdSlot } from '@/components/AdSlot';
 import { BigButton } from '@/components/Button';
 import { Blob, Screen } from '@/components/Screen';
 import { Face, Mascot, PencilIcon, PlayIcon, QuestionIcon } from '@/components/Icons';
@@ -117,6 +118,7 @@ export default function Home() {
         </View>
 
         <View style={{ flex: 1, minHeight: 16 }} />
+        <AdSlot />
         <T size={17} w="medium" center style={{ marginTop: 12 }}>
           {sk.home.footer}
         </T>

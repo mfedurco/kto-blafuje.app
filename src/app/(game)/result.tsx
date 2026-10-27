@@ -2,6 +2,7 @@ import { Redirect, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, TextInput, View } from 'react-native';
 
+import { AdSlot } from '@/components/AdSlot';
 import { BigButton } from '@/components/Button';
 import { Confetti, Face } from '@/components/Icons';
 import { Screen } from '@/components/Screen';
@@ -194,6 +195,7 @@ export default function Result() {
                       </View>
                     ))}
                   </View>
+                  <AdSlot marginTop={12} />
                 </>
               ) : (
                 <View style={{ backgroundColor: colors.white, borderWidth: 3, borderColor: colors.border, borderRadius: 28, padding: 18, alignItems: 'center' }}>
