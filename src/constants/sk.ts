@@ -48,6 +48,7 @@ export const sk = {
   packs: {
     badge: 'NOVÉ',
     download: 'Stiahnuť',
+    playWith: (name: string) => `Hrať: ${name}`,
     update: 'Aktualizovať',
     downloading: 'Sťahujem',
     ready: 'Vybrať',

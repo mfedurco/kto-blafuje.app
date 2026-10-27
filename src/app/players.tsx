@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, TextInput, View } from 'react-native';
 
@@ -15,6 +15,8 @@ const COUNTS = Array.from({ length: MAX_PLAYERS - MIN_PLAYERS + 1 }, (_, i) => M
 
 export default function Players() {
   const router = useRouter();
+  const { quick } = useLocalSearchParams<{ quick?: string }>();
+  const startGame = useGame((s) => s.startGame);
   const playerCount = useGame((s) => s.playerCount);
   const names = useGame((s) => s.names);
   const setPlayerCount = useGame((s) => s.setPlayerCount);
@@ -95,7 +97,18 @@ export default function Players() {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      <BigButton label={sk.common.next} onPress={() => router.push('/categories')} iconAfter={<ArrowRight />} />
+      <BigButton
+        label={quick === '1' ? sk.categories.start : sk.common.next}
+        onPress={() => {
+          // Rýchla voľba balíka: kategórie sa preskočia, hra sa spustí hneď.
+          if (quick === '1') {
+            if (startGame()) router.replace('/reveal');
+            return;
+          }
+          router.push('/categories');
+        }}
+        iconAfter={<ArrowRight />}
+      />
     </Screen>
   );
 }

@@ -13,7 +13,7 @@ import { colors } from '@/constants/theme';
 import { useExitGuard } from '@/lib/useExitGuard';
 import { useGame } from '@/store/useGame';
 
-const TOTAL_SECONDS = 90;
+const TOTAL_SECONDS = 120;
 const RING = 190;
 const RADIUS = 80;
 const CIRC = 2 * Math.PI * RADIUS;

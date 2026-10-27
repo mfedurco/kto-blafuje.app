@@ -26,6 +26,7 @@ export function PackBanner() {
   const router = useRouter();
   const packs = useGame((s) => s.packs);
   const installPack = useGame((s) => s.installPack);
+  const setCategories = useGame((s) => s.setCategories);
   const [meta, setMeta] = useState<PackMeta | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle');
 
@@ -44,10 +45,6 @@ export function PackBanner() {
 
   const onPress = async () => {
     if (status === 'loading') return;
-    if (upToDate) {
-      router.push('/categories');
-      return;
-    }
     setStatus('loading');
     try {
       installPack(await downloadPack(meta));
@@ -57,7 +54,44 @@ export function PackBanner() {
     }
   };
 
+  const playQuick = () => {
+    setCategories([installed!.id]);
+    router.push({ pathname: '/players', params: { quick: '1' } });
+  };
+
   const action = upToDate ? sk.packs.ready : installed ? sk.packs.update : sk.packs.download;
+
+  // Po stiahnutí banner zmizne a ostane len rýchla voľba na hranie s týmto balíkom.
+  if (upToDate) {
+    return (
+      <View style={{ width: '100%', marginTop: 16 }}>
+        <Pressable
+          onPress={playQuick}
+          accessibilityRole="button"
+          style={({ pressed }) => ({
+            height: 64,
+            borderRadius: 24,
+            borderWidth: 3,
+            borderColor: colors.ink,
+            backgroundColor: meta.color,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 10,
+            paddingHorizontal: 14,
+            transform: [{ scale: pressed ? 0.98 : 1 }],
+          })}
+        >
+          <T size={30} lh={36}>
+            {meta.emoji}
+          </T>
+          <T size={22} w="bold" lh={26} numberOfLines={1} adjustsFontSizeToFit style={{ flexShrink: 1 }}>
+            {sk.packs.playWith(meta.name)}
+          </T>
+        </Pressable>
+      </View>
+    );
+  }
 
   return (
     <View style={{ width: '100%', marginTop: 16 }}>

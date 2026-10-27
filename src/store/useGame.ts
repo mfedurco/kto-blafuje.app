@@ -70,7 +70,7 @@ type State = Persisted & Actions & { game: Game | null };
 
 const emptyNames = () => Array.from({ length: MAX_PLAYERS }, () => '');
 
-export const allCategories = (custom: Category[], packs: Category[] = []): Category[] => [...CATEGORIES, ...packs, ...custom];
+export const allCategories = (custom: Category[], packs: Category[] = []): Category[] => [...packs, ...CATEGORIES, ...custom];
 
 export const useGame = create<State>()(
   persist(
