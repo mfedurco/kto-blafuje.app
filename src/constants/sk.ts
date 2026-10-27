@@ -106,6 +106,7 @@ export const sk = {
     hintWasCategory: (cat: string) => `Kategória bola: ${cat}`,
     guessPlaceholder: 'Napíš slovo',
     guessSubmit: 'Hádam!',
+    guessSkip: 'Skončiť bez hádania',
     ifRightWin: 'Ak uhádne, vyhrávajú podvodníci.',
     innocentsWin: 'VÝHRA NEVINNÝCH',
     impostorsWin: 'VÝHRA PODVODNÍKOV',

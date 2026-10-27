@@ -18,6 +18,7 @@ export default function Result() {
   const { width: screenW } = useWindowDimensions();
   const game = useGame((s) => s.game);
   const guessWord = useGame((s) => s.guessWord);
+  const resolveGuess = useGame((s) => s.resolveGuess);
   const nextRound = useGame((s) => s.nextRound);
   const startFromLast = useGame((s) => s.startFromLast);
   const clearGame = useGame((s) => s.clearGame);
@@ -48,9 +49,10 @@ export default function Result() {
           paddingHorizontal: 22,
           paddingVertical: 2,
           transform: [{ rotate: '-2deg' }],
+          maxWidth: '100%',
         }}
       >
-        <T size={52} w="bold" lh={62}>
+        <T size={44} w="bold" lh={54} numberOfLines={1} adjustsFontSizeToFit>
           {elim.wasImpostor ? sk.result.impostor : sk.result.innocent}
         </T>
       </View>
@@ -121,6 +123,7 @@ export default function Result() {
                     }}
                   />
                   <BigButton label={sk.result.guessSubmit} onPress={submitText} disabled={!text.trim()} height={68} fontSize={30} radius={24} />
+                  <BigButton label={sk.result.guessSkip} onPress={() => resolveGuess(false)} variant="white" height={56} fontSize={22} radius={22} />
                 </View>
             </View>
           ) : (
