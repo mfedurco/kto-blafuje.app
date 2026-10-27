@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import { Component, useEffect, useState, type ReactNode } from 'react';
 import { ActivityIndicator, Image, Pressable, View } from 'react-native';
 
+import { SHOW_PACK_DEBUG } from '@/config/packs';
 import { sk } from '@/constants/sk';
 import { colors } from '@/constants/theme';
 import { downloadPack, fetchManifest, pickLatest, type PackMeta } from '@/lib/packs';
@@ -10,26 +11,40 @@ import { useGame } from '@/store/useGame';
 import { T } from './T';
 
 /** Najnovší balík z internetu sa zisťuje raz za beh appky. Bez internetu sa banner jednoducho nezobrazí. */
-let latestPromise: Promise<PackMeta | null> | null = null;
+type Latest = { meta: PackMeta | null; note: string };
+let latestPromise: Promise<Latest> | null = null;
 const loadLatest = () => {
   latestPromise ??= fetchManifest()
-    .then((m) => pickLatest(m))
-    .catch(() => {
+    .then((m): Latest => {
+      const meta = pickLatest(m);
+      return { meta, note: meta ? '' : 'žiadny aktuálny balík' };
+    })
+    .catch((e): Latest => {
       latestPromise = null;
-      return null;
+      return { meta: null, note: `nepodarilo sa načítať (${e instanceof Error ? e.message : 'chyba'})` };
     });
   return latestPromise;
 };
 
 /** Banner nesmie nikdy zhodiť appku: pri chybe sa jednoducho nezobrazí. */
-class Safe extends Component<{ children: ReactNode }, { failed: boolean }> {
-  state = { failed: false };
-  static getDerivedStateFromError() {
-    return { failed: true };
+class Safe extends Component<{ children: ReactNode }, { failed: string | null }> {
+  state = { failed: null as string | null };
+  static getDerivedStateFromError(e: unknown) {
+    return { failed: e instanceof Error ? e.message : 'chyba' };
   }
   render() {
-    return this.state.failed ? null : this.props.children;
+    return this.state.failed ? <Note text={`chyba bannera (${this.state.failed})`} /> : this.props.children;
   }
+}
+
+/** Skúšobná poznámka, prečo sa banner nezobrazil. Pred vydaním ju vypneme (SHOW_PACK_DEBUG). */
+function Note({ text }: { text: string }) {
+  if (!SHOW_PACK_DEBUG) return null;
+  return (
+    <T size={12} w="medium" lh={16} center style={{ marginTop: 10, opacity: 0.6 }}>
+      Balíky: {text}
+    </T>
+  );
 }
 
 /** Banner na úvodnej obrazovke: nový tematický balík slov na stiahnutie. */
@@ -47,17 +62,22 @@ function PackBannerInner() {
   const installPack = useGame((s) => s.installPack);
   const setCategories = useGame((s) => s.setCategories);
   const [meta, setMeta] = useState<PackMeta | null>(null);
+  const [note, setNote] = useState('načítavam');
   const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle');
 
   useEffect(() => {
     let alive = true;
-    loadLatest().then((m) => alive && setMeta(m));
+    loadLatest().then((l) => {
+      if (!alive) return;
+      setMeta(l.meta);
+      setNote(l.note);
+    });
     return () => {
       alive = false;
     };
   }, []);
 
-  if (!meta) return null;
+  if (!meta) return <Note text={note} />;
 
   const installed = packs.find((p) => p?.id === `pack:${meta.id}`);
   const installedId = installed?.id ?? null;

@@ -7,3 +7,5 @@ export const PACKS_BASE_URL = 'https://raw.githubusercontent.com/mfedurco/kto-bl
 export const MANIFEST_FILE = 'index.json';
 export const FETCH_TIMEOUT_MS = 8000;
 export const MAX_BYTES = 300_000;
+/** Skúšobné zobrazenie dôvodu, prečo sa banner nezobrazil (vypnúť pred vydaním). */
+export const SHOW_PACK_DEBUG = true;
