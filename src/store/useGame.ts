@@ -52,7 +52,7 @@ type Actions = {
   /** Posunie rozdávanie kariet na ďalšieho hráča. Vráti true, ak už videli všetci. */
   advanceReveal: () => boolean;
   eliminate: (playerId: number) => void;
-  resolveGuess: (correct: boolean) => void;
+  resolveGuess: (correct: boolean, skipped?: boolean) => void;
   guessWord: (input: string) => void;
   nextRound: () => void;
   clearGame: () => void;
@@ -166,7 +166,7 @@ export const useGame = create<State>()(
           },
         });
       },
-      resolveGuess: (correct) => {
+      resolveGuess: (correct, skipped = false) => {
         const g = get().game;
         if (!g?.elimination) return;
         set({
@@ -174,7 +174,7 @@ export const useGame = create<State>()(
             ...g,
             elimination: {
               ...g.elimination,
-              guess: correct ? 'right' : 'wrong',
+              guess: correct ? 'right' : skipped ? 'skipped' : 'wrong',
               outcome: correct ? 'impostorsWin' : evaluate(g.players),
             },
           },

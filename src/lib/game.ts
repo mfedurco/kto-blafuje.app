@@ -18,7 +18,7 @@ export type Outcome = 'continue' | 'innocentsWin' | 'impostorsWin';
 export type Elimination = {
   playerId: number;
   wasImpostor: boolean;
-  guess: 'none' | 'pending' | 'right' | 'wrong';
+  guess: 'none' | 'pending' | 'right' | 'wrong' | 'skipped';
   outcome: Outcome | null;
 };
 

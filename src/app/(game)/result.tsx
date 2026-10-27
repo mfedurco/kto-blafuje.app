@@ -123,12 +123,12 @@ export default function Result() {
                     }}
                   />
                   <BigButton label={sk.result.guessSubmit} onPress={submitText} disabled={!text.trim()} height={68} fontSize={30} radius={24} />
-                  <BigButton label={sk.result.guessSkip} onPress={() => resolveGuess(false)} variant="white" height={56} fontSize={22} radius={22} />
+                  <BigButton label={sk.result.guessSkip} onPress={() => resolveGuess(false, true)} variant="white" height={56} fontSize={22} radius={22} />
                 </View>
             </View>
           ) : (
             <View style={{ marginTop: 20, gap: 14 }}>
-              {elim.wasImpostor ? (
+              {elim.wasImpostor && elim.guess !== 'skipped' ? (
                 <View style={{ alignItems: 'center' }}>
                   <T size={26} w="semi" lh={32} center>
                     {elim.guess === 'right' ? sk.result.guessedRight(player.name) : sk.result.guessedWrong(player.name)}
