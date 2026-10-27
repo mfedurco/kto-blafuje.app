@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { Component, useEffect, useState, type ReactNode } from 'react';
 import { ActivityIndicator, Image, Pressable, View } from 'react-native';
 
 import { sk } from '@/constants/sk';
@@ -21,8 +21,27 @@ const loadLatest = () => {
   return latestPromise;
 };
 
+/** Banner nesmie nikdy zhodiť appku: pri chybe sa jednoducho nezobrazí. */
+class Safe extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
+
 /** Banner na úvodnej obrazovke: nový tematický balík slov na stiahnutie. */
 export function PackBanner() {
+  return (
+    <Safe>
+      <PackBannerInner />
+    </Safe>
+  );
+}
+
+function PackBannerInner() {
   const router = useRouter();
   const packs = useGame((s) => s.packs);
   const installPack = useGame((s) => s.installPack);
@@ -40,8 +59,9 @@ export function PackBanner() {
 
   if (!meta) return null;
 
-  const installed = packs.find((p) => p.id === `pack:${meta.id}`);
-  const upToDate = !!installed && (installed.version ?? 0) >= meta.version;
+  const installed = packs.find((p) => p?.id === `pack:${meta.id}`);
+  const installedId = installed?.id ?? null;
+  const upToDate = installed != null && (installed.version ?? 0) >= meta.version;
 
   const onPress = async () => {
     if (status === 'loading') return;
@@ -55,7 +75,8 @@ export function PackBanner() {
   };
 
   const playQuick = () => {
-    setCategories([installed!.id]);
+    if (!installedId) return;
+    setCategories([installedId]);
     router.push({ pathname: '/players', params: { quick: '1' } });
   };
 
