@@ -48,6 +48,10 @@ export const sk = {
   packs: {
     badge: 'NOVÉ',
     download: 'Stiahnuť',
+    removeTitle: (name: string) => `Odstrániť balík ${name}?`,
+    removeText: 'Kým je balík ešte platný, môžeš si ho znova stiahnuť z úvodnej obrazovky.',
+    remove: 'Odstrániť',
+    cancel: 'Zrušiť',
     playWith: (name: string) => `Hrať: ${name}`,
     update: 'Aktualizovať',
     downloading: 'Sťahujem',

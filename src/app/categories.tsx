@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { Pressable, ScrollView, Switch, View, useWindowDimensions } from 'react-native';
+import { Alert, Pressable, ScrollView, Switch, View, useWindowDimensions } from 'react-native';
 
 import { BigButton, ChoiceButton } from '@/components/Button';
 import { CategoryIcon, CheckBadge, PlayIcon } from '@/components/Icons';
@@ -19,6 +19,7 @@ export default function Categories() {
   const customCategories = useGame((s) => s.customCategories);
   const packs = useGame((s) => s.packs);
   const toggleCategory = useGame((s) => s.toggleCategory);
+  const removePack = useGame((s) => s.removePack);
   const setCategories = useGame((s) => s.setCategories);
   const setImpostorCount = useGame((s) => s.setImpostorCount);
   const startGame = useGame((s) => s.startGame);
@@ -28,6 +29,12 @@ export default function Categories() {
   const selectedPlayable = playable.filter((c) => categoryIds.includes(c.id));
   const tileWidth = (width - 40 - 12) / 2;
   const canTwo = maxImpostors(playerCount) >= 2;
+
+  const askRemove = (id: string, name: string) =>
+    Alert.alert(sk.packs.removeTitle(name), sk.packs.removeText, [
+      { text: sk.packs.cancel, style: 'cancel' },
+      { text: sk.packs.remove, style: 'destructive', onPress: () => removePack(id) },
+    ]);
 
   const start = () => {
     if (startGame()) router.replace('/reveal');
@@ -103,9 +110,22 @@ export default function Categories() {
                   </T>
                 </View>
                 {selected ? (
-                  <View style={{ position: 'absolute', top: 8, right: 8 }}>
+                  <View style={c.isPack ? { position: 'absolute', bottom: 8, right: 8 } : { position: 'absolute', top: 8, right: 8 }}>
                     <CheckBadge size={30} />
                   </View>
+                ) : null}
+                {c.isPack ? (
+                  <Pressable
+                    onPress={() => askRemove(c.id, c.name)}
+                    hitSlop={8}
+                    accessibilityRole="button"
+                    accessibilityLabel={sk.packs.removeTitle(c.name)}
+                    style={{ position: 'absolute', top: 6, right: 6, width: 34, height: 34, borderRadius: 17, backgroundColor: '#E5334F', borderWidth: 2, borderColor: colors.white, alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    <T size={20} w="bold" color={colors.white} lh={24}>
+                      ✕
+                    </T>
+                  </Pressable>
                 ) : null}
               </Pressable>
             );
