@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Linking, Modal, Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
+import { Modal, Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 
 import { AdSlot } from '@/components/AdSlot';
 import { BigButton } from '@/components/Button';
@@ -8,7 +8,7 @@ import { PackBanner } from '@/components/PackBanner';
 import { Blob, Screen } from '@/components/Screen';
 import { Face, Mascot, PencilIcon, PlayIcon, QuestionIcon } from '@/components/Icons';
 import { T } from '@/components/T';
-import { AUTHOR_NAME, DONATE_URL } from '@/config/author';
+import { AUTHOR_NAME } from '@/config/author';
 import { sk } from '@/constants/sk';
 import { avatarColors, colors } from '@/constants/theme';
 import { useGame } from '@/store/useGame';
@@ -130,14 +130,6 @@ export default function Home() {
           <T size={13} w="medium" lh={18}>
             {sk.home.author(AUTHOR_NAME)}
           </T>
-          {DONATE_URL ? (
-            <Pressable onPress={() => Linking.openURL(DONATE_URL)} hitSlop={10} accessibilityRole="link" accessibilityLabel={sk.home.donate}>
-              <T size={13} w="semi" lh={18}>
-                {'  ·  '}
-                {sk.home.donate}
-              </T>
-            </Pressable>
-          ) : null}
         </View>
       </ScrollView>
 

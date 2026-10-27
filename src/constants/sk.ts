@@ -21,7 +21,6 @@ export const sk = {
     rules: 'Pravidlá',
     footer: 'Bez internetu. Pre 3 až 10 hráčov.',
     author: (name: string) => `Autor: ${name}`,
-    donate: '☕ Podporiť autora',
   },
 
   players: {
