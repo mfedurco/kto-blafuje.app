@@ -20,7 +20,7 @@ export default function Home() {
   const startFromLast = useGame((s) => s.startFromLast);
   const [rulesOpen, setRulesOpen] = useState(false);
 
-  const mascotSize = Math.max(150, Math.min(250, height * 0.29));
+  const mascotSize = Math.max(120, Math.min(190, height * 0.22));
 
   const playSame = () => {
     if (startFromLast()) router.push('/reveal');
@@ -34,7 +34,7 @@ export default function Home() {
 
       <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }} showsVerticalScrollIndicator={false}>
         <Mascot size={mascotSize} />
-        <T size={60} w="bold" lh={64} style={{ marginTop: 2 }}>
+        <T size={52} w="bold" lh={56} style={{ marginTop: 2 }}>
           {sk.appName}
         </T>
         <View
@@ -52,12 +52,12 @@ export default function Home() {
           </T>
         </View>
 
-        <View style={{ width: '100%', marginTop: 34 }}>
+        <View style={{ width: '100%', marginTop: 22 }}>
           <BigButton
             label={sk.home.play}
             onPress={() => router.push('/players')}
-            height={92}
-            fontSize={42}
+            height={80}
+            fontSize={38}
             radius={32}
             icon={<PlayIcon />}
           />
@@ -72,7 +72,7 @@ export default function Home() {
           >
             {({ pressed }) => (
               <View style={{ backgroundColor: colors.yellowDark, borderRadius: 28, paddingBottom: pressed ? 2 : 6, marginTop: pressed ? 4 : 0 }}>
-                <View style={{ height: 80, borderRadius: 28, backgroundColor: colors.yellow, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 14, paddingHorizontal: 16 }}>
+                <View style={{ height: 70, borderRadius: 28, backgroundColor: colors.yellow, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 14, paddingHorizontal: 16 }}>
                   <View style={{ flexDirection: 'row' }}>
                     {lastParty.names.slice(0, 3).map((n, i) => (
                       <View key={`${n}-${i}`} style={{ marginLeft: i === 0 ? 0 : -12, borderRadius: 20, borderWidth: 3, borderColor: colors.yellow }}>
@@ -100,8 +100,8 @@ export default function Home() {
               label={sk.home.customWords}
               onPress={() => router.push('/custom')}
               variant="white"
-              height={64}
-              fontSize={20}
+              height={56}
+              fontSize={19}
               radius={24}
               icon={<PencilIcon />}
             />
@@ -111,8 +111,8 @@ export default function Home() {
               label={sk.home.rules}
               onPress={() => setRulesOpen(true)}
               variant="white"
-              height={64}
-              fontSize={20}
+              height={56}
+              fontSize={19}
               radius={24}
               icon={<QuestionIcon />}
             />
