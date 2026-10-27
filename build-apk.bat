@@ -54,10 +54,9 @@ cd android
 call gradlew.bat assembleRelease -PreactNativeArchitectures=arm64-v8a || goto :fail
 cd ..
 
-for /f %%i in ('powershell -NoProfile -Command "Get-Date -Format yyyyMMdd-HHmm"') do set STAMP=%%i
-copy /Y android\app\build\outputs\apk\release\app-release.apk "%SRC%KtoBlafuje-%STAMP%.apk"
+copy /Y android\app\build\outputs\apk\release\app-release.apk "%SRC%KtoBlafuje.apk"
 echo.
-echo HOTOVO: %SRC%KtoBlafuje-%STAMP%.apk  (skopiruj do mobilu a nainstaluj)
+echo HOTOVO: %SRC%KtoBlafuje.apk  (skopiruj do mobilu a nainstaluj)
 pause
 exit /b 0
 
