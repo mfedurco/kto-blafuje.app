@@ -37,7 +37,7 @@ if errorlevel 1 (
 rem Build prebieha v kratkej ceste C:\h (Windows limit 260 znakov pre C++ build)
 if exist "%WORK%" rmdir /s /q "%WORK%"
 mkdir "%WORK%"
-robocopy "%SRC%." "%WORK%" /E /XD node_modules android .git .expo /XF package-lock.json KtoBlafuje.apk /NFL /NDL /NJH /NJS /NP >nul
+robocopy "%SRC%." "%WORK%" /E /XD node_modules android .git .expo /XF package-lock.json KtoBlafuje*.apk /NFL /NDL /NJH /NJS /NP >nul
 cd /d "%WORK%" || goto :fail
 
 call npm install || goto :fail
@@ -54,9 +54,10 @@ cd android
 call gradlew.bat assembleRelease -PreactNativeArchitectures=arm64-v8a || goto :fail
 cd ..
 
-copy /Y android\app\build\outputs\apk\release\app-release.apk "%SRC%KtoBlafuje.apk"
+for /f %%i in ('powershell -NoProfile -Command "Get-Date -Format yyyyMMdd-HHmm"') do set STAMP=%%i
+copy /Y android\app\build\outputs\apk\release\app-release.apk "%SRC%KtoBlafuje-%STAMP%.apk"
 echo.
-echo HOTOVO: %SRC%KtoBlafuje.apk  (skopiruj do mobilu a nainstaluj)
+echo HOTOVO: %SRC%KtoBlafuje-%STAMP%.apk  (skopiruj do mobilu a nainstaluj)
 pause
 exit /b 0
 
